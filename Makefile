@@ -5,12 +5,12 @@ interfaces:
 
 program: interfaces
 	ocamlyacc diceParser.mly
-	ocamlc -c diceParser.mli
+	ocamlc -c diceParser.mli rollHistory.mli
 	ocamllex diceLexer.mll
 	ocamlfind ocamlopt -o diceroller -linkpkg -package pcre,unix,netclient,batteries randomPool.ml diceRoller.ml rollHistory.ml diceLexer.ml diceParser.ml diceroller.ml 
 
 clean: clean_parser
-	rm -f *.o *.cmo *.cmx *.cmi DiceParser.ml DiceLexer.ml diceroller *~
+	rm -f *.o *.cmo *.cmx *.cmi diceParser.ml diceLexer.ml diceroller *~
 
 clean_parser:
-	rm -f DiceParser.mli
+	rm -f diceParser.mli
