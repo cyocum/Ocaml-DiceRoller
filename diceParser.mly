@@ -24,7 +24,7 @@ roll: NUM D NUM {
   try
     let roll = DiceRoller.roll $1 $3 in
       DiceRoller.print_diceroll roll;
-      (*RollHistory.add !hist *)
+      hist := RollHistory.add !hist roll (List.fold_left (+) 0 roll) 
   with
       DiceRoller.BadDiceRoll bad -> 
 	print_string("Exception raised: " ^ bad ^ "\n");

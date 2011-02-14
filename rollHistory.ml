@@ -10,8 +10,7 @@ let add roll_hist lst total =
       | xs -> BatList.append xs last
 
 let get_hist roll_hist num =
-  let my_num = num - 1 in
-  BatList.at roll_hist my_num
+  BatList.at roll_hist (num - 1)
 
 let print_roll roll = 
   DiceRoller.print_diceroll roll.roll_lst
