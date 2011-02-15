@@ -17,5 +17,15 @@ let print_diceroll roll_list =
     print_string "total: ";
     print_int total;
     print_newline ();
-    print_string "# ";
-;;
+    print_string "# "
+
+let print_and_record num_dice num_sides =
+    try
+      let roll = roll num_dice num_sides in
+        print_diceroll roll;
+        RollHistory.add roll (List.fold_left (+) 0 roll) 
+    with
+        BadDiceRoll bad -> 
+	  print_string("Exception raised: " ^ bad ^ "\n")
+      | ZeroSides zsides -> 
+          print_string("Exception raised: " ^ zsides ^ "\n")

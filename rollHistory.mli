@@ -1,4 +1,4 @@
 type roll
-val add : roll list -> int list -> int -> roll list
-val get_hist : roll list -> int -> roll
-val print_roll : roll -> unit
+
+val add : int list -> int -> unit 
+val get_hist : int -> int list

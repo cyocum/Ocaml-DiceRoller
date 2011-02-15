@@ -3,14 +3,19 @@ type roll = {
   total : int
 }
 
-let add roll_hist lst total =
+let hist = ref []
+
+let add lst total =
   let last = [{ roll_lst = lst; total = total }] in
-    match roll_hist with
-      | [] -> last
-      | xs -> BatList.append xs last
+    match !hist with
+    | [] -> hist := last; ()
+    | xs -> hist := BatList.append xs last; ()
 
-let get_hist roll_hist num =
-  BatList.at roll_hist (num - 1)
-
-let print_roll roll = 
-  DiceRoller.print_diceroll roll.roll_lst
+let get_hist num =
+  try 
+    let rolls = BatList.at !hist (num - 1) in
+      rolls.roll_lst
+  with
+    Invalid_argument e -> 
+      print_endline e; 
+      [0] 

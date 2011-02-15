@@ -1,5 +1,6 @@
 %{
-  let hist = ref []
+
+       
 %}
 
 %token <int> NUM
@@ -21,15 +22,7 @@ line: NEWLINE { }
 ;
 
 roll: NUM D NUM { 
-  try
-    let roll = DiceRoller.roll $1 $3 in
-      DiceRoller.print_diceroll roll;
-      hist := RollHistory.add !hist roll (List.fold_left (+) 0 roll) 
-  with
-      DiceRoller.BadDiceRoll bad -> 
-	print_string("Exception raised: " ^ bad ^ "\n");
-    | DiceRoller.ZeroSides zsides -> 
-        print_string("Exception raised: " ^ zsides ^ "\n");
+  DiceRoller.print_and_record $1 $3
 }
 ;
 

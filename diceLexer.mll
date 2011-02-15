@@ -1,12 +1,11 @@
 {
   open DiceParser
   open Lexing
-  open Hashtbl
-  open RollHistory;;
 
   let tbl = Hashtbl.create 16;;
   Hashtbl.add tbl "exit" (fun x -> exit 0);;
-  Hashtbl.add tbl "history" (fun x -> print_endline "not implemented yet." );;
+  Hashtbl.add tbl "history" (fun x -> DiceRoller.print_diceroll 
+  (RollHistory.get_hist x));;
 }
 
 let digit = ['0' - '9']
