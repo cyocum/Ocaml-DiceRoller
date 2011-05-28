@@ -4,16 +4,18 @@
 
   let tbl = Hashtbl.create 16;;
   Hashtbl.add tbl "exit" (fun x -> exit 0);;
-  Hashtbl.add tbl "history" (fun x -> DiceRoller.print_diceroll 
-  (RollHistory.get_hist x));;
+  (*Hashtbl.add tbl "history" (fun x -> DiceRoller.print_diceroll *)
+  (*(RollHistory.get_hist x));;*)
 }
 
 let digit = ['0' - '9']
 let ident = ['a' - 'z']
+let modifier = ['+' '-']
 rule token = parse
   | '\n' { NEWLINE }
   | digit+ as num { NUM (int_of_string num) }
   | 'd' { D }
+  | modifier as mod_str { MOD(mod_str) }
   | ident* as word { try
 		       let f = Hashtbl.find tbl word in
 			 COMM f			 
