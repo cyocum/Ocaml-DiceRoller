@@ -1,0 +1,31 @@
+== OCAML Diceroller ==
+
+This is a dice roller which is written in the Ocaml language.
+As its random pool, it uses Random.org so it will need access
+to the internet.
+
+== OCAML Dependancies ==
+
+To build ocaml you will need the following libraries:
+ocamlfind
+ocaml pcre
+unix
+netclient
+batteries
+
+== Syntax ==
+To roll dice, you need to input them as follows:
+2d6 (two six sided dice)
+2d10 (two ten sided dice)
+
+Any combination of number of dice with any side is allowed.
+
+== Building ==
+
+To build, all you need to do is run "make" in the top level
+directory.  If the build is successful, the binary named
+"diceroller" will be deposited in the bin directory.
+
+== License ==
+
+This program is licensed under the AGPL v3 (http://www.gnu.org/licenses/agpl-3.0.html).  Please see the license.txt file for more information.
