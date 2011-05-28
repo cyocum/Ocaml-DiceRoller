@@ -1,3 +1,4 @@
+%{
 (*
 Copyright 2011 Christopher Guy Yocum 
 
@@ -14,8 +15,6 @@ Copyright 2011 Christopher Guy Yocum
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *)
-
-%{
 
        
 %}
