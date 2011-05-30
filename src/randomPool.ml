@@ -83,11 +83,17 @@ let get_rand_int num_sides =
     (Int32.to_int int32) mod num_sides + 1
 
 let save_pool () =
-  let oc = BatFile.open_out_bin ~mode:[`append; `create] "random.bin" in
+  let oc = BatFile.open_out ~mode:[`append; `create] "random.bin" in
     Queue.iter (fun x -> BatIO.write_byte oc x) byte_q;
-    (*flush oc;*)
     BatIO.close_out oc
   
-(*let load_pool () =
+let load_pool () =
   let ic = BatFile.open_in "random.bin" in
-    List.iter (fun x -> BatIO.input ic)*)
+    try
+      print_endline "loading random.bin";
+      while true do
+	Queue.add (BatIO.read_byte ic) byte_q
+      done
+    with
+      | BatIO.No_more_input ->
+	BatIO.close_in ic
