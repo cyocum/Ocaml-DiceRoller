@@ -42,15 +42,26 @@ let int32_of_bytes bytes =
   if List.length bytes <> 4 then
     raise (Invalid_argument ("there must be 4 bytes to make a 32 bit int"))
   else
-    let res = ref 0l in
-      for i = 0 to 3 do
-	let byte = List.nth bytes i in
-	  res := Int32.logor !res (Int32.shift_left (Int32.of_int byte) (8*i))
-      done;
-    if (Int32.compare !res 0l) < 0 then
-      Int32.add (Int32.lognot !res) Int32.one
-    else
-      !res
+    let range = BatEnum.range 0 ~until:3 in
+    let rec int32_of_bytes_aux bytes offset accum =
+      match bytes with
+	| b::bs ->
+	  begin
+	    match offset with
+	      | x::xs ->
+		let curr = Int32.logor accum (Int32.shift_left (Int32.of_int b) (8*x)) in
+		  int32_of_bytes_aux bs xs curr
+	      | [] ->
+		accum
+	  end
+	| [] ->
+	  accum
+    in
+      let res = int32_of_bytes_aux bytes (BatList.of_enum range) 0l in
+        if (Int32.compare res 0l) < 0 then
+          Int32.add (Int32.lognot res) Int32.one
+	else
+	  res
 
 let rand_bytes () =
   let response =  http_get_message "http://random.org/cgi-bin/randbyte?nbytes=1024&format=bin" in
