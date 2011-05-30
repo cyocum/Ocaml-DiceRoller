@@ -1,10 +1,10 @@
-# 1 "diceLexer.mll"
+# 18 "diceLexer.mll"
  
   open DiceParser
   open Lexing
 
   let tbl = Hashtbl.create 16;;
-  Hashtbl.add tbl "exit" (fun x -> exit 0);;
+  Hashtbl.add tbl "exit" (fun x -> RandomPool.save_pool (); exit 0);;
   (*Hashtbl.add tbl "history" (fun x -> DiceRoller.print_diceroll *)
   (*(RollHistory.get_hist x));;*)
 
@@ -118,42 +118,42 @@ let rec token lexbuf =
 and __ocaml_lex_token_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 15 "diceLexer.mll"
+# 32 "diceLexer.mll"
          ( NEWLINE )
 # 124 "diceLexer.ml"
 
   | 1 ->
 let
-# 16 "diceLexer.mll"
+# 33 "diceLexer.mll"
               num
 # 130 "diceLexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 16 "diceLexer.mll"
+# 33 "diceLexer.mll"
                   ( NUM (int_of_string num) )
 # 134 "diceLexer.ml"
 
   | 2 ->
-# 17 "diceLexer.mll"
+# 34 "diceLexer.mll"
         ( D )
 # 139 "diceLexer.ml"
 
   | 3 ->
 let
-# 18 "diceLexer.mll"
+# 35 "diceLexer.mll"
                 mod_str
 # 145 "diceLexer.ml"
 = Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
-# 18 "diceLexer.mll"
+# 35 "diceLexer.mll"
                         ( MOD(mod_str) )
 # 149 "diceLexer.ml"
 
   | 4 ->
 let
-# 19 "diceLexer.mll"
+# 36 "diceLexer.mll"
               word
 # 155 "diceLexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 19 "diceLexer.mll"
+# 36 "diceLexer.mll"
                    ( try
 		       let f = Hashtbl.find tbl word in
 			 COMM f			 
@@ -162,12 +162,12 @@ let
 # 163 "diceLexer.ml"
 
   | 5 ->
-# 24 "diceLexer.mll"
+# 41 "diceLexer.mll"
       ( token lexbuf )
 # 168 "diceLexer.ml"
 
   | 6 ->
-# 25 "diceLexer.mll"
+# 42 "diceLexer.mll"
         ( raise End_of_file )
 # 173 "diceLexer.ml"
 

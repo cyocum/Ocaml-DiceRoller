@@ -20,7 +20,7 @@ Copyright 2011 Christopher Guy Yocum
   open Lexing
 
   let tbl = Hashtbl.create 16;;
-  Hashtbl.add tbl "exit" (fun x -> exit 0);;
+  Hashtbl.add tbl "exit" (fun x -> RandomPool.save_pool (); exit 0);;
   (*Hashtbl.add tbl "history" (fun x -> DiceRoller.print_diceroll *)
   (*(RollHistory.get_hist x));;*)
 }

@@ -7,9 +7,24 @@ type token =
 
 open Parsing;;
 # 2 "diceParser.mly"
+(*
+Copyright 2011 Christopher Guy Yocum 
 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*)
        
-# 13 "diceParser.ml"
+# 28 "diceParser.ml"
 let yytransl_const = [|
   258 (* NEWLINE *);
   259 (* D *);
@@ -74,54 +89,54 @@ let yyact = [|
   (fun _ -> failwith "parser")
 ; (fun __caml_parser_env ->
     Obj.repr(
-# 16 "diceParser.mly"
+# 31 "diceParser.mly"
                    ( )
-# 80 "diceParser.ml"
+# 95 "diceParser.ml"
                : unit))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : unit) in
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'line) in
     Obj.repr(
-# 17 "diceParser.mly"
+# 32 "diceParser.mly"
                    ( )
-# 88 "diceParser.ml"
+# 103 "diceParser.ml"
                : unit))
 ; (fun __caml_parser_env ->
     Obj.repr(
-# 20 "diceParser.mly"
+# 35 "diceParser.mly"
               ( )
-# 94 "diceParser.ml"
+# 109 "diceParser.ml"
                : 'line))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'roll) in
     Obj.repr(
-# 21 "diceParser.mly"
+# 36 "diceParser.mly"
                      ( )
-# 101 "diceParser.ml"
+# 116 "diceParser.ml"
                : 'line))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'roll_with_mod) in
     Obj.repr(
-# 22 "diceParser.mly"
+# 37 "diceParser.mly"
                               ( )
-# 108 "diceParser.ml"
+# 123 "diceParser.ml"
                : 'line))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : 'command) in
     Obj.repr(
-# 23 "diceParser.mly"
+# 38 "diceParser.mly"
                         ( )
-# 115 "diceParser.ml"
+# 130 "diceParser.ml"
                : 'line))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 2 : int) in
     let _3 = (Parsing.peek_val __caml_parser_env 0 : int) in
     Obj.repr(
-# 26 "diceParser.mly"
+# 41 "diceParser.mly"
                 ( 
   DiceRoller.print_and_record _1 _3 '+' 0
 )
-# 125 "diceParser.ml"
+# 140 "diceParser.ml"
                : 'roll))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 4 : int) in
@@ -129,26 +144,26 @@ let yyact = [|
     let _4 = (Parsing.peek_val __caml_parser_env 1 : char) in
     let _5 = (Parsing.peek_val __caml_parser_env 0 : int) in
     Obj.repr(
-# 31 "diceParser.mly"
+# 46 "diceParser.mly"
                                  (
 	DiceRoller.print_and_record _1 _3 _4 _5
 )
-# 137 "diceParser.ml"
+# 152 "diceParser.ml"
                : 'roll_with_mod))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : int -> unit) in
     let _2 = (Parsing.peek_val __caml_parser_env 0 : int) in
     Obj.repr(
-# 36 "diceParser.mly"
+# 51 "diceParser.mly"
                    ( _1 _2 )
-# 145 "diceParser.ml"
+# 160 "diceParser.ml"
                : 'command))
 ; (fun __caml_parser_env ->
     let _1 = (Parsing.peek_val __caml_parser_env 1 : int -> unit) in
     Obj.repr(
-# 37 "diceParser.mly"
+# 52 "diceParser.mly"
                      ( _1 0 )
-# 152 "diceParser.ml"
+# 167 "diceParser.ml"
                : 'command))
 (* Entry input *)
 ; (fun __caml_parser_env -> raise (Parsing.YYexit (Parsing.peek_val __caml_parser_env 0)))

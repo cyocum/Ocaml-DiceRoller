@@ -17,3 +17,4 @@ Copyright 2011 Christopher Guy Yocum
 
 
 val get_rand_int : int -> int
+val save_pool : unit -> unit
