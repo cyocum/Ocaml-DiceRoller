@@ -21,22 +21,15 @@ open Http_client
 let byte_q = Queue.create ()
 
 let byte_of_string bit_str = 
-  let range = BatEnum.range 0 ~until:7 in
-  let rec byte_of_string_aux offset accum =
-    match offset with
-      | x::xs ->
-	begin
-	  match bit_str.[x] with
-	    | '1' ->
-	      let curr = accum lor (1 lsl (7-x)) in
-		byte_of_string_aux xs curr
-	    | _ -> 
-		byte_of_string_aux xs accum
-	end
-      | [] ->
+  let byte_of_string_aux accum offset =
+    match bit_str.[offset] with
+      | '1' ->
+	accum lor (1 lsl (7-offset))
+      | _ ->
 	accum
   in
-    byte_of_string_aux (BatList.of_enum range) 0
+  let range = BatEnum.range 0 ~until:7 in
+    List.fold_left byte_of_string_aux 0 (BatList.of_enum range)
 
 let int32_of_bytes bytes =
   if List.length bytes <> 4 then
