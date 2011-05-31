@@ -43,25 +43,13 @@ let int32_of_bytes bytes =
     raise (Invalid_argument ("there must be 4 bytes to make a 32 bit int"))
   else
     let range = BatEnum.range 0 ~until:3 in
-    let rec int32_of_bytes_aux bytes offset accum =
-      match bytes with
-	| b::bs ->
-	  begin
-	    match offset with
-	      | x::xs ->
-		let curr = Int32.logor accum (Int32.shift_left (Int32.of_int b) (8*x)) in
-		  int32_of_bytes_aux bs xs curr
-	      | [] ->
-		accum
-	  end
-	| [] ->
-	  accum
-    in
-      let res = int32_of_bytes_aux bytes (BatList.of_enum range) 0l in
-        if (Int32.compare res 0l) < 0 then
-          Int32.add (Int32.lognot res) Int32.one
-	else
-	  res
+    let res = List.fold_left2 (fun accum byte offset -> 
+      Int32.logor accum (Int32.shift_left (Int32.of_int byte) (8*offset)))
+      0l bytes (BatList.of_enum range) in
+      if (Int32.compare res 0l) < 0 then
+        Int32.add (Int32.lognot res) Int32.one
+      else
+	res
 
 let rand_bytes () =
   let response =  http_get_message "http://random.org/cgi-bin/randbyte?nbytes=1024&format=bin" in
@@ -94,17 +82,21 @@ let get_rand_int num_sides =
     (Int32.to_int int32) mod num_sides + 1
 
 let save_pool () =
-  let oc = BatFile.open_out ~mode:[`append; `create] "random.bin" in
+  let oc = BatFile.open_out "random.bin" in
     Queue.iter (fun x -> BatIO.write_byte oc x) byte_q;
     BatIO.close_out oc
   
 let load_pool () =
-  let ic = BatFile.open_in "random.bin" in
-    try
-      print_endline "loading random.bin";
-      while true do
-	Queue.add (BatIO.read_byte ic) byte_q
-      done
-    with
-      | BatIO.No_more_input ->
-	BatIO.close_in ic
+  try
+    let ic = BatFile.open_in "random.bin" in
+      try
+	print_endline "loading random.bin";
+	while true do
+	  Queue.add (BatIO.read_byte ic) byte_q
+	done
+      with
+	| BatIO.No_more_input ->
+	  BatIO.close_in ic
+  with
+      Sys_error e ->
+	print_endline "no random.bin found...loading from random source."
