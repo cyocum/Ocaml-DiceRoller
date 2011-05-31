@@ -35,10 +35,11 @@ let int32_of_bytes bytes =
   if List.length bytes <> 4 then
     raise (Invalid_argument ("there must be 4 bytes to make a 32 bit int"))
   else
+    let int32_of_bytes_aux accum byte offset =
+      Int32.logor accum (Int32.shift_left (Int32.of_int byte) (8*offset))
+    in
     let range = BatEnum.range 0 ~until:3 in
-    let res = List.fold_left2 (fun accum byte offset -> 
-      Int32.logor accum (Int32.shift_left (Int32.of_int byte) (8*offset)))
-      0l bytes (BatList.of_enum range) in
+    let res = List.fold_left2 int32_of_bytes_aux 0l bytes (BatList.of_enum range) in
       if (Int32.compare res 0l) < 0 then
         Int32.add (Int32.lognot res) Int32.one
       else
@@ -61,13 +62,11 @@ let rec take num_elems =
     try
       Queue.take byte_q :: take (num_elems - 1)
     with
-	Queue.Empty -> begin
-	  replenish_pool byte_q;
-	  take num_elems
-	end
-
-let int_of_bits bit_list = 
-  BatList.fold_right (fun x z -> 2 * z + x) bit_list 0
+	Queue.Empty -> 
+	  begin
+	    replenish_pool byte_q;
+	    take num_elems
+	  end
 
 let get_rand_int num_sides =
   let bytes_lst = take 4 in
@@ -75,9 +74,13 @@ let get_rand_int num_sides =
     (Int32.to_int int32) mod num_sides + 1
 
 let save_pool () =
-  let oc = BatFile.open_out "random.bin" in
-    Queue.iter (fun x -> BatIO.write_byte oc x) byte_q;
-    BatIO.close_out oc
+  try
+    let oc = BatFile.open_out "random.bin" in
+      Queue.iter (fun x -> BatIO.write_byte oc x) byte_q;
+      BatIO.close_out oc
+  with
+      Sys_error e ->
+	print_endline "cannot save random pool...please check your permissions."
   
 let load_pool () =
   try

@@ -4,11 +4,9 @@
   open Lexing
 
   let tbl = Hashtbl.create 16;;
-  Hashtbl.add tbl "exit" (fun x -> RandomPool.save_pool (); exit 0);;
-  (*Hashtbl.add tbl "history" (fun x -> DiceRoller.print_diceroll *)
-  (*(RollHistory.get_hist x));;*)
+  Hashtbl.add tbl "exit" (fun x -> RandomPool.save_pool (); exit 0)
 
-# 12 "diceLexer.ml"
+# 10 "diceLexer.ml"
 let __ocaml_lex_tables = {
   Lexing.lex_base = 
    "\000\000\249\255\250\255\026\000\252\255\052\000\010\000\255\255\
@@ -118,58 +116,58 @@ let rec token lexbuf =
 and __ocaml_lex_token_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
-# 32 "diceLexer.mll"
+# 30 "diceLexer.mll"
          ( NEWLINE )
-# 124 "diceLexer.ml"
+# 122 "diceLexer.ml"
 
   | 1 ->
 let
-# 33 "diceLexer.mll"
+# 31 "diceLexer.mll"
               num
-# 130 "diceLexer.ml"
+# 128 "diceLexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 33 "diceLexer.mll"
+# 31 "diceLexer.mll"
                   ( NUM (int_of_string num) )
-# 134 "diceLexer.ml"
+# 132 "diceLexer.ml"
 
   | 2 ->
-# 34 "diceLexer.mll"
+# 32 "diceLexer.mll"
         ( D )
-# 139 "diceLexer.ml"
+# 137 "diceLexer.ml"
 
   | 3 ->
 let
-# 35 "diceLexer.mll"
+# 33 "diceLexer.mll"
                 mod_str
-# 145 "diceLexer.ml"
+# 143 "diceLexer.ml"
 = Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
-# 35 "diceLexer.mll"
+# 33 "diceLexer.mll"
                         ( MOD(mod_str) )
-# 149 "diceLexer.ml"
+# 147 "diceLexer.ml"
 
   | 4 ->
 let
-# 36 "diceLexer.mll"
+# 34 "diceLexer.mll"
               word
-# 155 "diceLexer.ml"
+# 153 "diceLexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 36 "diceLexer.mll"
+# 34 "diceLexer.mll"
                    ( try
 		       let f = Hashtbl.find tbl word in
 			 COMM f			 
 		     with Not_found -> COMM (fun x -> (print_endline "no such command"))
 		   )
-# 163 "diceLexer.ml"
+# 161 "diceLexer.ml"
 
   | 5 ->
-# 41 "diceLexer.mll"
+# 39 "diceLexer.mll"
       ( token lexbuf )
-# 168 "diceLexer.ml"
+# 166 "diceLexer.ml"
 
   | 6 ->
-# 42 "diceLexer.mll"
+# 40 "diceLexer.mll"
         ( raise End_of_file )
-# 173 "diceLexer.ml"
+# 171 "diceLexer.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf; __ocaml_lex_token_rec lexbuf __ocaml_lex_state
 
