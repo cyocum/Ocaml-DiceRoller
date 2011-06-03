@@ -83,16 +83,18 @@ let save_pool () =
 	print_endline "cannot save random pool...please check your permissions."
   
 let load_pool () =
+  let rec load_pool_aux ic =
+    try
+      Queue.add (BatIO.read_byte ic) byte_q;
+      load_pool_aux ic
+    with 
+      | BatIO.No_more_input ->
+	BatIO.close_in ic
+  in
   try
     let ic = BatFile.open_in "random.bin" in
-      try
-	print_endline "loading random.bin";
-	while true do
-	  Queue.add (BatIO.read_byte ic) byte_q
-	done
-      with
-	| BatIO.No_more_input ->
-	  BatIO.close_in ic
+      print_endline "loading random.bin";
+      load_pool_aux ic
   with
       Sys_error e ->
 	print_endline "no random.bin found...loading from random source."
