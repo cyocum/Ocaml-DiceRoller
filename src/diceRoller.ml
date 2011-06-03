@@ -47,8 +47,7 @@ let print_and_record num_dice num_sides mod_char mod_num =
       let roll = roll num_dice num_sides in
       let total = (List.fold_left (+) 0 roll)  in
       let total_mod = apply_mod mod_char total mod_num in
-        print_diceroll roll total_mod;
-        RollHistory.add roll total_mod
+        print_diceroll roll total_mod
     with
         BadDiceRoll bad -> 
 	  print_string("Exception raised: " ^ bad ^ "\n")

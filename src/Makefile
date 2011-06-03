@@ -1,5 +1,5 @@
 interfaces:
-	ocamlc -c randomPool.mli diceRoller.mli rollHistory.mli
+	ocamlc -c randomPool.mli diceRoller.mli
 
 program: interfaces
 	ocamlyacc diceParser.mly
