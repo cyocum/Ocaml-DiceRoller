@@ -46,11 +46,15 @@ let int32_of_bytes bytes =
 	res
 
 let rand_bytes () =
-  let response =  http_get_message "http://random.org/cgi-bin/randbyte?nbytes=1024&format=bin" in
-  let nl_split = Pcre.split ~pat:"\n" in
-  let sp_split = Pcre.split ~pat:" " in
-  let lst_split = nl_split response#response_body#value in
-    BatList.map (byte_of_string) (BatList.flatten (BatList.map sp_split lst_split))
+  try
+    let response =  http_get_message "http://random.org/cgi-bin/randbyte?nbytes=1024&format=bin" in
+    let nl_split = Pcre.split ~pat:"\n" in
+    let sp_split = Pcre.split ~pat:" " in
+    let lst_split = nl_split response#response_body#value in
+      BatList.map (byte_of_string) (BatList.flatten (BatList.map sp_split lst_split))
+  with
+      Http_client.Http_protocol e ->
+	EmergencyRandom.get_rand_bytes 1024
 
 let replenish_pool byte_q =
   List.iter (fun lst_mem -> Queue.add lst_mem byte_q)
