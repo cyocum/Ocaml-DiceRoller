@@ -66,11 +66,11 @@ let rec take num_elems =
     try
       Queue.take byte_q :: take (num_elems - 1)
     with
-	Queue.Empty -> 
-	  begin
-	    replenish_pool byte_q;
-	    take num_elems
-	  end
+      | Queue.Empty -> 
+	begin
+	  replenish_pool byte_q;
+	  take num_elems
+	end
 
 let get_rand_int num_sides =
   let bytes_lst = take 4 in
@@ -83,8 +83,8 @@ let save_pool () =
       Queue.iter (fun x -> BatIO.write_byte oc x) byte_q;
       BatIO.close_out oc
   with
-      Sys_error e ->
-	print_endline "cannot save random pool...please check your permissions."
+    | Sys_error e ->
+        print_endline "cannot save random pool...please check your permissions."
   
 let load_pool () =
   let rec load_pool_aux ic =
@@ -100,5 +100,5 @@ let load_pool () =
       print_endline "loading random.bin";
       load_pool_aux ic
   with
-      Sys_error e ->
-	print_endline "no random.bin found...loading from random source."
+    | Sys_error e ->
+      print_endline "no random.bin found...loading from random source."
