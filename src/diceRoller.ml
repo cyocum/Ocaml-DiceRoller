@@ -31,7 +31,7 @@ let rec roll num_dice num_sides =
     if num_dice <= 0 then [] 
     else
       let ret = RandomPool.get_rand_int num_sides in
-	ret :: roll (num_dice - 1) num_sides
+	ret :: roll (pred num_dice) num_sides
 
 let print_diceroll roll_list total =
   let str_roll_list = BatList.map string_of_int roll_list in
@@ -43,13 +43,13 @@ let print_diceroll roll_list total =
     print_string "# "
 
 let print_and_record num_dice num_sides mod_char mod_num =
-    try
-      let roll = roll num_dice num_sides in
-      let total = (List.fold_left (+) 0 roll)  in
-      let total_mod = apply_mod mod_char total mod_num in
-        print_diceroll roll total_mod
-    with
-        BadDiceRoll bad -> 
-	  print_string("Exception raised: " ^ bad ^ "\n")
-      | ZeroSides zsides -> 
-          print_string("Exception raised: " ^ zsides ^ "\n")
+  try
+    let roll = roll num_dice num_sides in
+    let total = (List.fold_left (+) 0 roll)  in
+    let total_mod = apply_mod mod_char total mod_num in
+    print_diceroll roll total_mod
+  with
+      BadDiceRoll bad -> 
+	print_string("Exception raised: " ^ bad ^ "\n")
+    | ZeroSides zsides -> 
+        print_string("Exception raised: " ^ zsides ^ "\n")

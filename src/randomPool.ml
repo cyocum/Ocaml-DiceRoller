@@ -75,7 +75,7 @@ let rec take num_elems =
 let get_rand_int num_sides =
   let bytes_lst = take 4 in
   let int32 = int32_of_bytes bytes_lst in
-    (Int32.to_int int32) mod num_sides + 1
+    (Int32.to_int int32) mod (succ num_sides)
 
 let save_pool () =
   try
@@ -102,3 +102,15 @@ let load_pool () =
   with
     | Sys_error e ->
       print_endline "no random.bin found...loading from random source."
+
+
+
+
+
+
+
+
+
+
+
+
