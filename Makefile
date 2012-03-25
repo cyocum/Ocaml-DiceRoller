@@ -1,3 +1,3 @@
 all:
-	make -C src program #; mv src/diceroller diceroller
+	make -C src program; mv src/diceroller diceroller
 

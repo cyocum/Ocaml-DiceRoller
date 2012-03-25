@@ -1,7 +1,5 @@
 open Lexing
 open Parsing
-open DiceLexer
-open DiceParser
 
 let _ =
   try 
