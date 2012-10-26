@@ -33,6 +33,7 @@ input: /* empty */ { [DiceAST.Nil] }
 
 roll: 
       | NUM D NUM { DiceAST.Roll($1, $3) }
+      | op { $1 }
 ;
 
 rolls_aux :
