@@ -18,23 +18,17 @@ Copyright 2011 Christopher Guy Yocum
 {
   open DiceParser
   open Lexing
-
-  let tbl = Hashtbl.create 16;;
-  Hashtbl.add tbl "exit" (fun x -> RandomPool.save_pool (); exit 0)
 }
 
 let digit = ['0' - '9']
 let ident = ['a' - 'z']
-let modifier = ['+' '-']
 rule token = parse
   | '\n' { NEWLINE }
   | digit+ as num { NUM (int_of_string num) }
   | 'd' { D }
-  | modifier as mod_str { MOD(mod_str) }
-  | ident* as word { try
-		       let f = Hashtbl.find tbl word in
-			 COMM f			 
-		     with Not_found -> COMM (fun x -> (print_endline "no such command"))
-		   }
+  | '+' { ADD }
+  | '-' { SUB }
+  | '*' { MUL }
+  | '/' { DIV }
   | _ { token lexbuf }
   | eof { raise End_of_file }

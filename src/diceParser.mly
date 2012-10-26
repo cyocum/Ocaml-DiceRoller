@@ -20,35 +20,41 @@ Copyright 2011 Christopher Guy Yocum
 
 %token <int> NUM
 %token NEWLINE D 
-%token <int -> unit> COMM
-%token <char> MOD
+%token ADD SUB MUL DIV
 
 %start input
-%type <unit> input
+%type <DiceAST.t list> input
 
 %%
 
-input: /* empty */ { }
-      | input line { }
+input: /* empty */ { [DiceAST.Nil] }
+      | rolls_aux NEWLINE { $1 }
 ;
 
-line: NEWLINE { }
-      | roll NEWLINE { }
-      | roll_with_mod NEWLINE { }
-      | command NEWLINE { }
+roll: 
+      | NUM D NUM { DiceAST.Roll($1, $3) }
 ;
 
-roll: NUM D NUM { 
-  DiceRoller.print_and_record $1 $3 '+' 0
-}
+rolls_aux :
+      | roll { [$1] }
+      | rolls_aux roll { $2 :: $1 }
 ;
 
-roll_with_mod: NUM D NUM MOD NUM {
-	DiceRoller.print_and_record $1 $3 $4 $5
-}
+op :
+      | roll ADD roll { DiceAST.Add($1, $3) }
+      | roll SUB roll { DiceAST.Sub($1, $3) }
+      | roll MUL roll { DiceAST.Mul($1, $3) }
+      | roll DIV roll { DiceAST.Div($1, $3) }
 ;
 
-command : COMM NUM { $1 $2 }
-      | COMM NEWLINE { $1 0 }
-;
 %%
+
+
+
+
+
+
+
+
+
+

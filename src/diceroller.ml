@@ -8,7 +8,8 @@ let _ =
       RandomPool.load_pool ();
       while true do
 	try 
-	  DiceParser.input DiceLexer.token lexbuf
+	  let ast = DiceParser.input DiceLexer.token lexbuf in 
+            DiceRoller.print_rolls (DiceAST.eval_lst ast);
 	with 
 	  | Parse_error -> ()
       done

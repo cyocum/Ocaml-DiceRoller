@@ -15,10 +15,16 @@ Copyright 2011 Christopher Guy Yocum
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *)
 
-
-val roll : int -> int -> int list
-val print_and_record : int -> int -> char -> int -> unit
-val print_diceroll : int list -> int -> unit
 exception BadDiceRoll of string
 exception ZeroSides of string
- 
+
+type r
+
+val roll : int -> int -> r
+val add_roll : r -> r -> r
+val sub_roll : r -> r -> r
+val mul_roll : r -> r -> r
+val div_roll : r -> r -> r
+val nil_roll : r
+val print_roll : r -> unit
+val print_rolls : r list -> unit
