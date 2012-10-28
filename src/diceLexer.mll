@@ -18,6 +18,11 @@ Copyright 2011 Christopher Guy Yocum
 {
   open DiceParser
   open Lexing
+
+  let find_command = function
+    | "exit"
+    | "quit" -> (fun () -> RandomPool.save_pool (); exit 0)
+    | _ ->(fun () -> RandomPool.save_pool ())
 }
 
 let digit = ['0' - '9']
@@ -30,5 +35,24 @@ rule token = parse
   | '-' { SUB }
   | '*' { MUL }
   | '/' { DIV }
+  | ident+ as id { COMM((find_command id)) }
   | _ { token lexbuf }
   | eof { raise End_of_file }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

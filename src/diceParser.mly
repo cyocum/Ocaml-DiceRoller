@@ -21,6 +21,8 @@ Copyright 2011 Christopher Guy Yocum
 %token <int> NUM
 %token NEWLINE D 
 %token ADD SUB MUL DIV
+%token  IDENT
+%token <unit -> unit> COMM
 
 %start input
 %type <DiceAST.t list> input
@@ -34,6 +36,7 @@ input: /* empty */ { [DiceAST.Nil] }
 roll: 
       | NUM D NUM { DiceAST.Roll($1, $3) }
       | op { $1 }
+      | comm { $1 }
 ;
 
 rolls_aux :
@@ -46,9 +49,20 @@ op :
       | roll SUB roll { DiceAST.Sub($1, $3) }
       | roll MUL roll { DiceAST.Mul($1, $3) }
       | roll DIV roll { DiceAST.Div($1, $3) }
+
 ;
 
+comm : COMM { DiceAST.Command($1) }
+
 %%
+
+
+
+
+
+
+
+
 
 
 

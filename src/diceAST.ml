@@ -5,6 +5,7 @@ type t =
   | Sub of t * t
   | Mul of t * t
   | Div of t * t
+  | Command of (unit -> unit)
 
 let rec eval = function
   | Roll(num, sides) -> (DiceRoller.roll num sides)
@@ -12,7 +13,8 @@ let rec eval = function
   | Sub(lhs, rhs) -> DiceRoller.sub_roll (eval lhs) (eval rhs)
   | Mul(lhs, rhs) -> DiceRoller.mul_roll (eval lhs) (eval rhs)
   | Div(lhs, rhs) -> DiceRoller.div_roll (eval lhs) (eval rhs)
-  | Nil -> DiceRoller.roll 0 1
+  | Command(f) -> f (); DiceRoller.nil_roll
+  | Nil -> DiceRoller.nil_roll
 
 let eval_lst lst =
   List.rev_map eval lst
