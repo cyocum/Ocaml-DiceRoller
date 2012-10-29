@@ -44,25 +44,32 @@ rolls_aux :
       | rolls_aux roll { $2 :: $1 }
 ;
 
-op :
+op : 
+      | roll_op { $1 }
+      | num_op { $1 }
+;
+
+roll_op :
       | roll ADD roll { DiceAST.Add($1, $3) }
       | roll SUB roll { DiceAST.Sub($1, $3) }
       | roll MUL roll { DiceAST.Mul($1, $3) }
       | roll DIV roll { DiceAST.Div($1, $3) }
+;
 
+num_op :
+      | roll ADD NUM { DiceAST.Add($1, DiceAST.Num($3)) }
+      | roll SUB NUM { DiceAST.Sub($1, DiceAST.Num($3)) }
+      | roll MUL NUM { DiceAST.Mul($1, DiceAST.Num($3)) }
+      | roll DIV NUM { DiceAST.Div($1, DiceAST.Num($3)) }
+      | NUM ADD roll { DiceAST.Add($3, DiceAST.Num($1)) }
+      | NUM SUB roll { DiceAST.Sub($3, DiceAST.Num($1)) }
+      | NUM MUL roll { DiceAST.Mul($3, DiceAST.Num($1)) }
+      | NUM DIV roll { DiceAST.Div($3, DiceAST.Num($1)) }
 ;
 
 comm : COMM { DiceAST.Command($1) }
 
 %%
-
-
-
-
-
-
-
-
 
 
 

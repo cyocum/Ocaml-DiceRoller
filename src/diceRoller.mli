@@ -22,6 +22,7 @@ type r
 
 val roll : int -> int -> r
 val op_roll : (int -> int -> int) -> r -> r -> r
+val num_op : (int -> int -> int) -> r -> int -> r
 val nil_roll : r
 val print_roll : r -> unit
 val print_rolls : r list -> unit

@@ -46,6 +46,9 @@ let roll num_dice num_sides =
 let op_roll op lhs rhs =
   { total = (op lhs.total rhs.total); dice_rolled = (BatList.append lhs.dice_rolled rhs.dice_rolled) }
 
+let num_op op lhs num =
+  { lhs with total = (op lhs.total num) }
+
 let nil_roll =
   { total = 0; dice_rolled = [] }
 
