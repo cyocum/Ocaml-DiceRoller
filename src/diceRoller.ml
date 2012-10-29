@@ -43,20 +43,8 @@ let roll num_dice num_sides =
   let dices = (aux num_dice []) in 
   { dice_rolled = dices; total = (List.fold_left (+) 0 dices) }
 
-let add_roll lhs rhs =
-  { total = (lhs.total + rhs.total); dice_rolled = (BatList.append lhs.dice_rolled rhs.dice_rolled) }
-
-let sub_roll lhs rhs =
-  { total = (lhs.total - rhs.total); dice_rolled = (BatList.append lhs.dice_rolled rhs.dice_rolled) }
-
-let mul_roll lhs rhs =
-  { total = (lhs.total * rhs.total); dice_rolled = (BatList.append lhs.dice_rolled rhs.dice_rolled) }
-
-let div_roll lhs rhs = 
-  if rhs.total = 0 then 
-    raise Division_by_zero 
-  else
-    { total = (lhs.total * rhs.total); dice_rolled = (BatList.append lhs.dice_rolled rhs.dice_rolled) }
+let op_roll op lhs rhs =
+  { total = (op lhs.total rhs.total); dice_rolled = (BatList.append lhs.dice_rolled rhs.dice_rolled) }
 
 let nil_roll =
   { total = 0; dice_rolled = [] }
