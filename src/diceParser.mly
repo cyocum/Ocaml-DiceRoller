@@ -35,18 +35,18 @@ input: /* empty */ { [DiceAST.Nil] }
 
 roll: 
       | NUM D NUM { DiceAST.Roll($1, $3) }
-      | op { $1 }
       | comm { $1 }
 ;
 
 rolls_aux :
       | roll { [$1] }
+      | op { [$1] }
       | rolls_aux roll { $2 :: $1 }
 ;
 
 op : 
       | roll_op { $1 }
-      | num_op { $1 }
+      | num_op { $1 } 
 ;
 
 roll_op :
