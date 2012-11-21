@@ -20,6 +20,9 @@ open Http_client
 
 let byte_q = Queue.create ()
 
+let range i j =
+  (BatList.of_enum (BatEnum.range i ~until:j))
+
 let byte_of_string bit_str = 
   let byte_of_string_aux accum offset =
     match bit_str.[offset] with
@@ -28,8 +31,7 @@ let byte_of_string bit_str =
       | _ ->
 	accum
   in
-  let range = BatEnum.range 0 ~until:7 in
-    List.fold_left byte_of_string_aux 0 (BatList.of_enum range)
+    List.fold_left byte_of_string_aux 0 (range 0 7)
 
 let int32_of_bytes bytes =
   if List.length bytes <> 4 then
@@ -38,8 +40,8 @@ let int32_of_bytes bytes =
     let int32_of_bytes_aux accum byte offset =
       Int32.logor accum (Int32.shift_left (Int32.of_int byte) (8*offset))
     in
-    let range = BatEnum.range 0 ~until:3 in
-    let res = List.fold_left2 int32_of_bytes_aux 0l bytes (BatList.of_enum range) in
+    let range = range 0 3 in
+    let res = List.fold_left2 int32_of_bytes_aux 0l bytes range in
       if (Int32.compare res 0l) < 0 then
         Int32.add (Int32.lognot res) Int32.one
       else
@@ -64,7 +66,7 @@ let rec take num_elems =
   if num_elems <= 0 then []
   else 
     try
-      Queue.take byte_q :: take (num_elems - 1)
+      Queue.take byte_q :: take (pred num_elems)
     with
       | Queue.Empty -> 
 	begin
