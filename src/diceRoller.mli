@@ -1,5 +1,5 @@
 (*
-Copyright 2011 Christopher Guy Yocum 
+Copyright 2011 Christopher Guy Yocum
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,9 +14,6 @@ Copyright 2011 Christopher Guy Yocum
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *)
-
-exception BadDiceRoll of string
-exception ZeroSides of string
 
 type r
 
