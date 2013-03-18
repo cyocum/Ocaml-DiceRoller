@@ -15,8 +15,6 @@ Copyright 2011 Christopher Guy Yocum
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *)
 
-exception BadDiceRoll of string
-
 type r =
     {
       total : int;
