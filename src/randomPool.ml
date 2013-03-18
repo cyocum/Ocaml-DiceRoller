@@ -46,9 +46,9 @@ let int32_of_bytes bytes =
 	res
 
 let get_response url =
-  let get = new get url in
+  let get = new Http_client.get url in
   (* reset the connection timeout to 3 secs rather than 300 *)
-  http_pipe#set_options { (http_pipe#get_options) with connection_timeout = 3. };
+  http_pipe#set_options { (http_pipe#get_options) with Http_client.connection_timeout = 3. };
   http_pipe#add get;
   http_pipe#run ();
   begin
@@ -89,8 +89,8 @@ let rec take num_elems =
 let get_rand_int num_sides =
   let bytes_lst = take 4 in
   let int32 = int32_of_bytes bytes_lst in
-  let res = (succ ((Int32.to_int int32) mod num_sides)) in
-  res
+    (succ ((Int32.to_int int32) mod num_sides))
+
 
 let save_pool () =
   try
