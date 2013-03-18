@@ -1,5 +1,5 @@
 (*
-Copyright 2011 Christopher Guy Yocum 
+Copyright 2011 Christopher Guy Yocum
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,9 +16,8 @@ Copyright 2011 Christopher Guy Yocum
 *)
 
 exception BadDiceRoll of string
-exception ZeroSides of string
 
-type r = 
+type r =
     {
       total : int;
       dice_rolled : int list;
@@ -31,16 +30,19 @@ let print_roll { total; dice_rolled } =
 let print_rolls lst =
   List.iter print_roll lst
 
+let nil_roll =
+  { total = 0; dice_rolled = [] }
+
 let roll num_dice num_sides =
   let rec aux nd accum =
-    if num_sides <= 0 then raise (ZeroSides ("A die cannot be zero sides")) 
+    if num_sides <= 0 then accum
     else
       if nd <= 0 then accum
       else
         let ret = RandomPool.get_rand_int num_sides in
 	aux (pred nd) (ret::accum)
   in
-  let dices = (aux num_dice []) in 
+  let dices = (aux num_dice []) in
   { dice_rolled = dices; total = (List.fold_left (+) 0 dices) }
 
 let op_roll op lhs rhs =
@@ -48,15 +50,3 @@ let op_roll op lhs rhs =
 
 let num_op op lhs num =
   { lhs with total = (op lhs.total num) }
-
-let nil_roll =
-  { total = 0; dice_rolled = [] }
-
-
-
-
-
-
-
-
-
