@@ -15,9 +15,6 @@ Copyright 2011 Christopher Guy Yocum
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *)
 
-open Http_client.Convenience
-open Http_client
-
 let byte_q = Queue.create ()
 let http_pipe = new Http_client.pipeline
 
