@@ -1,5 +1,5 @@
 (*
-Copyright 2011 Christopher Guy Yocum 
+Copyright 2011 Christopher Guy Yocum
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,11 +19,12 @@ open Http_client.Convenience
 open Http_client
 
 let byte_q = Queue.create ()
+let http_pipe = new Http_client.pipeline
 
 let range i j =
   (BatList.of_enum (BatEnum.range i ~until:j))
 
-let byte_of_string bit_str = 
+let byte_of_string bit_str =
   let byte_of_string_aux accum offset =
     match bit_str.[offset] with
       | '1' ->
@@ -47,12 +48,26 @@ let int32_of_bytes bytes =
       else
 	res
 
+let get_response url =
+  let get = new get url in
+  (* reset the connection timeout to 3 secs rather than 300 *)
+  http_pipe#set_options { (http_pipe#get_options) with connection_timeout = 3. };
+  http_pipe#add get;
+  http_pipe#run ();
+  begin
+    match get#status with
+    | `Successful ->
+      get#response_body#value
+    | _ ->
+        ""
+  end
+
 let rand_bytes () =
   try
-    let response =  http_get_message "http://random.org/cgi-bin/randbyte?nbytes=1024&format=bin" in
+    let response =  get_response "http://random.org/cgi-bin/randbyte?nbytes=1024&format=bin" in
     let nl_split = Pcre.split ~pat:"\n" in
     let sp_split = Pcre.split ~pat:" " in
-    let lst_split = nl_split response#response_body#value in
+    let lst_split = nl_split response in
       BatList.map (byte_of_string) (BatList.flatten (BatList.map sp_split lst_split))
   with
       Http_client.Http_protocol e ->
@@ -64,11 +79,11 @@ let replenish_pool byte_q =
 
 let rec take num_elems =
   if num_elems <= 0 then []
-  else 
+  else
     try
       Queue.take byte_q :: take (pred num_elems)
     with
-      | Queue.Empty -> 
+      | Queue.Empty ->
 	begin
 	  replenish_pool byte_q;
 	  take num_elems
@@ -76,7 +91,7 @@ let rec take num_elems =
 
 let get_rand_int num_sides =
   let bytes_lst = take 4 in
-  let int32 = int32_of_bytes bytes_lst in   
+  let int32 = int32_of_bytes bytes_lst in
   let res = (succ ((Int32.to_int int32) mod num_sides)) in
   res
 
@@ -88,13 +103,13 @@ let save_pool () =
   with
     | Sys_error e ->
         print_endline "cannot save random pool...please check your permissions."
-  
+
 let load_pool () =
   let rec load_pool_aux ic =
     try
       Queue.add (BatIO.read_byte ic) byte_q;
       load_pool_aux ic
-    with 
+    with
       | BatIO.No_more_input ->
 	BatIO.close_in ic
   in
